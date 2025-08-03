@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - FreshMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="icon" type="image/x-icon" href="newimag/LOGO2FAV.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-container">
+        <div class="fruit-loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +1 234 567 890</span>
+                    <span><i class="fas fa-envelope"></i> info@freshmart.com</span>
+                </div>
+                <div class="header-links">
+                    <a href="#" id="trackOrderBtn">Track Order</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>FreshMart</h1>
+                        <div class="slogan">Fresh • Organic • Delicious</div>
+                    </a>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search for fruits and vegetables...">
+                    <button type="button"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-actions">
+                    <a href="#" class="wishlist-btn" id="wishlistBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="count" id="wishlistCount">0</span>
+                    </a>
+                    <a href="cart.html" class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="count" id="cartCount">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="cart-page">
+                <h1>Shopping Cart</h1>
+                <div class="cart-header">
+                    <button class="btn btn-primary" onclick="clearCart()" style="margin-bottom: 1rem; margin-right: 1rem;">
+                        <i class="fas fa-trash"></i> Clear Cart
+                    </button>
+                    <button class="btn btn-primary" onclick="resetCartCount()" style="margin-bottom: 1rem; margin-right: 1rem;">
+                        <i class="fas fa-refresh"></i> Reset Count
+                    </button>
+                    <button class="btn btn-primary" onclick="clearAllUserData()" style="margin-bottom: 1rem;">
+                        <i class="fas fa-user-times"></i> Clear User Data
+                    </button>
+                </div>
+                <div id="cartContainer">
+                    <!-- Cart items will be loaded dynamically -->
+                </div>
+                <!-- Checkout Modal -->
+                <div class="modal" id="checkoutModal">
+                  <div class="modal-content checkout-modal-content">
+                    <span class="close-btn" id="closeCheckoutModal">&times;</span>
+                    <div class="checkout-steps">
+                      <!-- Step 1: Address -->
+                      <div class="checkout-step" id="step-address">
+                        <h2>Shipping Address</h2>
+                        <form id="addressForm">
+                          <div class="form-group">
+                            <label for="addressName">Full Name</label>
+                            <input type="text" id="addressName" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="addressPhone">Phone Number</label>
+                            <input type="tel" id="addressPhone" required pattern="[0-9]{10,15}">
+                          </div>
+                          <div class="form-group">
+                            <label for="addressPincode">Pincode</label>
+                            <input type="text" id="addressPincode" required pattern="[0-9]{4,10}">
+                          </div>
+                          <div class="form-group">
+                            <label for="addressHouse">House No.</label>
+                            <input type="text" id="addressHouse" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="addressLandmark">Landmark</label>
+                            <input type="text" id="addressLandmark">
+                          </div>
+                          <button type="button" class="submit-btn" id="toPaymentStep">Next: Payment</button>
+                        </form>
+                      </div>
+                      <!-- Step 2: Payment -->
+                      <div class="checkout-step" id="step-payment" style="display:none;">
+                        <h2>Payment Method</h2>
+                        <form id="paymentForm">
+                          <div class="form-group payment-options-group">
+                            <div class="payment-option" data-method="card">
+                              <input type="radio" name="paymentMethod" value="card" id="payCard" required hidden>
+                              <label for="payCard">
+                                <img src="newimag/cardpay.png" alt="Card" class="pay-icon">
+                                <span>Card</span>
+                              </label>
+                            </div>
+                            <div class="payment-option" data-method="phonepe">
+                              <input type="radio" name="paymentMethod" value="phonepe" id="payPhonePe" hidden>
+                              <label for="payPhonePe">
+                                <img src="newimag/phonepe.png" alt="PhonePe" class="pay-icon">
+                                <span>PhonePe</span>
+                              </label>
+                            </div>
+                            <div class="payment-option" data-method="paytm">
+                              <input type="radio" name="paymentMethod" value="paytm" id="payPaytm" hidden>
+                              <label for="payPaytm">
+                                <img src="newimag/paytm.png" alt="Paytm" class="pay-icon">
+                                <span>Paytm</span>
+                              </label>
+                            </div>
+                            <div class="payment-option" data-method="cod">
+                              <input type="radio" name="paymentMethod" value="cod" id="payCOD" hidden>
+                              <label for="payCOD">
+                                <img src="newimag/COD.png" alt="Cash on Delivery" class="pay-icon">
+                                <span>Cash on Delivery</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div id="cardDetails" style="display:none;">
+                            <div class="form-group">
+                              <label for="cardNumber">Card Number</label>
+                              <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-group">
+                              <label for="cardName">Name on Card</label>
+                              <input type="text" id="cardName" placeholder="Cardholder Name">
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group">
+                                <label for="cardExpiry">Expiry</label>
+                                <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/YY">
+                              </div>
+                              <div class="form-group">
+                                <label for="cardCVV">CVV</label>
+                                <input type="password" id="cardCVV" maxlength="4" placeholder="CVV">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="checkout-actions">
+                            <button type="button" class="submit-btn" id="backToAddress">Back</button>
+                            <button type="button" class="submit-btn" id="toReviewStep">Next: Review</button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- Step 3: Review & Confirm -->
+                      <div class="checkout-step" id="step-review" style="display:none;">
+                        <h2>Review & Confirm</h2>
+                        <div id="reviewSummary"></div>
+                        <div class="checkout-actions">
+                          <button type="button" class="submit-btn" id="backToPayment">Back</button>
+                          <button type="button" class="submit-btn" id="placeOrderBtn">Place Order</button>
+                        </div>
+                      </div>
+                      <!-- Step 4: Success -->
+                      <div class="checkout-step" id="step-success" style="display:none; text-align:center;">
+                        <h2>Payment Successful!</h2>
+                        <p>Your order has been placed. Thank you for shopping with FreshMart!</p>
+                        <button type="button" class="submit-btn" id="closeSuccessBtn">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About FreshMart</h3>
+                    <p>Your trusted source for fresh, high-quality fruits and vegetables. We deliver farm-fresh produce right to your doorstep.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@freshmart.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Fresh Street, City, Country</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FreshMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/loader.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Load cart when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+        });
+    </script>
+    <!-- Login/Register Modal -->
+    <div class="modal" id="authModal">
+      <div class="modal-content" id="authModalContent">
+        <!-- Content will be injected by JS -->
+      </div>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html> 
